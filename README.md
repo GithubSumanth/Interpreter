@@ -1,7 +1,16 @@
 # Interpreter
-A simple interpreter built using python
+A simple interpreter and IDE built using python
 
-<h2>Grammar</h2>
+<h3>Integrated Development Environment</h3>
+<p>IDE is built using Python's GUI Tkinter</p>
+
+<img src="images/ide_image.png"></img>
+
+You can visit the documentation site for the current programming language by clicking on help in the ide and then selecting Document
+
+<a href="https://githubsumanth.github.io/Pascal-Documentation/">Click here to visit the documentation page</a>
+
+<h3>Grammar</h3>
 
 program : PROGRAM variable SEMI block DOT
 
@@ -62,7 +71,7 @@ level_6 : PLUS level_6
 
 variable: ID
 
-<h2>Code Examples</h2>
+<h3>Code Examples</h3>
 
 <pre><code>program helloWorld;
 var 
@@ -141,5 +150,5 @@ begin
 end.
 </code></pre>
 
-<h2>Referrences</h2>
+<h3>Referrences</h3>
 <a href="https://ruslanspivak.com/lsbasi-part1/">Ruslan's Blog: Let’s Build A Simple Interpreter</a>
