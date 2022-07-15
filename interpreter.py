@@ -1822,7 +1822,3 @@ def main(text):
         final_result = []
         result = "".join(result)
         return f'{result}{repr(sys.exc_info()[0])[8:-2]} : {sys.exc_info()[1]}'
-
-
-if __name__ == '__main__':
-    main()
