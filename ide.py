@@ -1,11 +1,10 @@
+import subprocess
 from tkinter import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter import font
+import interpreter
 import webbrowser
 import sys
-
-# Import the interpreter file to call the main function
-import interpreter
 
 # Creating a Window instance
 window = Tk()
@@ -21,8 +20,8 @@ window.config(background="#EEEEEE")
 window.title("Interpreter")
 
 font_family1 = font.Font(family='Courier New', size=12)
+font_family2 = font.Font(family='Helvatica', size=12)
 
-# Text editor configuration
 text_editor = Text(height=50,
                    width=70,
                    background="#00092C",
@@ -32,7 +31,6 @@ text_editor = Text(height=50,
 text_editor.insert('1.0', "{ Write your code here }")
 text_editor.pack(side=LEFT)
 
-# Console configuration
 output_area = Text(height=50,
                    width=70,
                    background="#000312",
@@ -45,24 +43,13 @@ new_font = font.Font(font=text_editor['font'])
 tab_size = new_font.measure("    ")
 text_editor.config(tabs=tab_size)
 
-
 def new_page_functionality():
-    """
-    Creates the new page for writing the source code
-
-    Clears the source code writing screen and set the file path to empty string
-    :return: None
-    """
     global file_path
     file_path = ""
     text_editor.delete('1.0', END)
 
 
-def open_functionality():
-    """
-    Opens the file system and updates the file path to selected file location
-    :return: None
-    """
+def open_functionality(event=None):
     global file_path
     path = askopenfilename(filetypes=[('RVCE Files', '*.rvce')])
     with open(path, 'r') as file:
@@ -72,12 +59,7 @@ def open_functionality():
         file_path = path
 
 
-def save_functionality():
-    """
-    Opens the files system and allows programmer to save the file with .rvce extension
-    and hence update the file path if it was empty previously
-    :return: None
-    """
+def save_functionality(event=None):
     global file_path
     if file_path == "":
         path = asksaveasfilename(filetypes=[('RVCE Files', '*.rvce')])
@@ -86,14 +68,11 @@ def save_functionality():
         path = file_path
     with open(path, 'w') as file:
         code = text_editor.get('1.0', END)
+        code = code.strip()
         file.write(code)
 
 
-def save_as_functionality():
-    """
-    Allows the programmer to make a copy of the same file with different name
-    :return: None
-    """
+def save_as_functionality(event=None):
     global file_path
     path = asksaveasfilename(filetypes=[('RVCE Files', '*.rvce')])
     with open(path, 'w') as file:
@@ -102,11 +81,7 @@ def save_as_functionality():
         file_path = path
 
 
-def set_dark_mode():
-    """
-    Changes the IDE to dark mode
-    :return: None
-    """
+def set_dark_mode(event=None):
     text_editor.config(
         background="#00092C",
         foreground="#eee",
@@ -120,11 +95,7 @@ def set_dark_mode():
     )
 
 
-def set_light_mode():
-    """
-    Changes the IDE to light mode
-    :return: None
-    """
+def set_light_mode(event=None):
     text_editor.config(
         background="#fff",
         foreground="#231955",
@@ -138,19 +109,10 @@ def set_light_mode():
     )
 
 
-def help_functionality():
-    """
-    Takes to the documentation poge
-    :return:
-    """
+def help_functionality(event=None):
     webbrowser.open("https://githubsumanth.github.io/Pascal-Documentation/")
 
-
-def run_functionality():
-    """
-    Run the source code and produces the output at the console
-    :return:
-    """
+def run_functionality(event=None):
     global file_path
     output_area.delete('1.0', END)
     text = text_editor.get('1.0', END)
@@ -160,11 +122,8 @@ def run_functionality():
         output = sys.exc_info()
     output_area.insert('1.0', output)
 
-
-# Menubar
 menu_bar = Menu(window, background='blue', fg='white')
 
-# Sub-menu Items ---- File
 file_bar = Menu(menu_bar, tearoff=0)
 file_bar.add_command(label="\tNew\t\t\t\t", command=new_page_functionality)
 file_bar.add("separator")
@@ -176,29 +135,42 @@ file_bar.add_command(label="\tSave As\t\t\t\t", command=save_as_functionality)
 file_bar.add("separator")
 file_bar.add_command(label="\tExit\t\t\t\t", command=exit)
 
-# Sub-menu Items ---- Themes
 themes_bar = Menu(menu_bar, tearoff=0)
 themes_bar.add_command(label="\tDark Mode", command=set_dark_mode)
 themes_bar.add("separator")
 themes_bar.add_command(label="\tLight Mode", command=set_light_mode)
 
-# Sub-menu Items ---- Help
 help_bar = Menu(menu_bar, tearoff=0)
 help_bar.add_command(label="\tDocuments", command=help_functionality)
 
-# Menu Item ---- File
 menu_bar.add_cascade(label="\tFile\t", menu=file_bar)
-
-# Menu Item ---- Run
 menu_bar.add_cascade(label="\tRun\t", command=run_functionality)
-
-# Menu Item ---- Themes
 menu_bar.add_cascade(label="\tThemes\t", menu=themes_bar)
-
-# Menu Item ---- Help
 menu_bar.add_cascade(label="\tHelp\t", menu=help_bar)
 
 window.config(menu=menu_bar)
+
+window.bind('<Control_L><s>', save_functionality)
+
+window.bind('<Control_L><n>', new_page_functionality)
+window.bind('<Control_R><n>', new_page_functionality)
+
+window.bind('<Control_L><Shift_L><s>', save_as_functionality)
+
+window.bind('<Alt_L><d>', set_dark_mode)
+window.bind('<Alt_R><d>', set_dark_mode)
+
+window.bind('<Alt_L><l>', set_light_mode)
+window.bind('<Alt_R><l>', set_light_mode)
+
+window.bind('<Control_L><h>', help_functionality)
+window.bind('<Control_R><h>', help_functionality)
+
+window.bind('<Control_L><Shift_L>', run_functionality)
+
+window.bind('<Control_L><o>', open_functionality)
+window.bind('<Control_R><o>', open_functionality)
+
 text_editor.focus_set()
 window.mainloop()
 
