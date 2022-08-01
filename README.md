@@ -4,7 +4,7 @@ A simple interpreter and IDE built using python
 <h3>Integrated Development Environment</h3>
 <p>IDE is built using Python's GUI Tkinter</p>
 
-<img src="images/ide_image.png"/>
+<img src="ide_image.png"/>
 
 You can visit the documentation site for the current programming language by clicking on help in the ide and then selecting Document
 
